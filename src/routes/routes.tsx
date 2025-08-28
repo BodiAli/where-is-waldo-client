@@ -1,5 +1,5 @@
 import type { RouteObject } from "react-router";
-import AppLayout from "../AppLayout";
+import AppLayout from "../components/AppLayout/AppLayout";
 import IllustrationPage from "../pages/Illustration/IllustrationPage";
 import IllustrationsPage from "../pages/Illustrations/IllustrationsPage";
 
