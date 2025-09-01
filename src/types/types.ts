@@ -11,5 +11,4 @@ export interface IllustrationType {
   imageId: string;
   Characters: CharacterType[];
 }
-
 export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
