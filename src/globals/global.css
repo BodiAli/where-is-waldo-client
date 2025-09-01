@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-VariableFont_wdth\,wght.ttf") format("truetype");
+}
+
+body {
+  font-family: "Roboto";
+}
