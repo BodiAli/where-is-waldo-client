@@ -1,3 +1,24 @@
+import Loader from "../../components/Loader/Loader";
+import useFetch from "../../hooks/useFetch";
+import type { IllustrationsType } from "../../types/types";
+
 export default function IllustrationsPage() {
-  return <main>Illustrations page</main>;
+  const { data, loading } = useFetch("/illustrations");
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  const { illustrations } = data as { illustrations: IllustrationsType };
+
+  return (
+    <main>
+      <h1>Where's Waldo (Photo Tagging Game)</h1>
+      <div>
+        {illustrations.map((illustration) => {
+          return <div key={illustration.id}>{illustration.difficulty}</div>;
+        })}
+      </div>
+    </main>
+  );
 }
