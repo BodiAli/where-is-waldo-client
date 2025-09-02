@@ -5,6 +5,7 @@ import eslintReact from "@eslint-react/eslint-plugin";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import jestDom from "eslint-plugin-jest-dom";
+import vitest from "@vitest/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import { globalIgnores } from "eslint/config";
 
@@ -39,4 +40,14 @@ export default tseslint.config([
     },
   },
   eslintConfigPrettier,
+  {
+    files: ["**/*.test.{ts,tsx}"],
+    plugins: {
+      vitest,
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      "@typescript-eslint/unbound-method": "off",
+    },
+  },
 ]);
