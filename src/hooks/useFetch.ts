@@ -4,6 +4,7 @@ import { SERVER_URL } from "../types/types";
 export default function useFetch(path: string) {
   const [data, setData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -20,6 +21,8 @@ export default function useFetch(path: string) {
         if (!ignore) {
           setData(data);
         }
+      } catch (error) {
+        setError(error as Error);
       } finally {
         if (!ignore) {
           setLoading(false);
@@ -34,5 +37,5 @@ export default function useFetch(path: string) {
     };
   }, [path]);
 
-  return { data, loading };
+  return { data, loading, error };
 }
