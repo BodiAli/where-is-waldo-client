@@ -1,5 +1,5 @@
 import styles from "./Loader.module.css";
 
 export default function Loader() {
-  return <div className={styles.loader}></div>;
+  return <div className={styles.loader} data-testid="loader"></div>;
 }
