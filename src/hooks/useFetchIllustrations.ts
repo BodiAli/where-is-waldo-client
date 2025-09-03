@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SERVER_URL } from "../types/types";
 
-export default function useFetch(path: string) {
+export default function useFetchIllustrations(path: string) {
   const [data, setData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
