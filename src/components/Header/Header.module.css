@@ -1,0 +1,28 @@
+.header {
+  padding: 1rem;
+  border-bottom: 2px solid black;
+}
+
+.header > ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.header a {
+  font-size: 1.5rem;
+  color: black;
+  text-decoration: none;
+}
+
+.header a.active {
+  position: relative;
+}
+
+.header a.active::after {
+  content: "";
+  display: block;
+  border: 1px solid black;
+  position: absolute;
+  width: 100%;
+}

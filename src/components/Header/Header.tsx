@@ -1,14 +1,29 @@
-import { Link } from "react-router";
+import { NavLink } from "react-router";
+import styles from "./Header.module.css";
 
 export default function Header() {
   return (
-    <header>
+    <header className={styles.header}>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <NavLink
+            className={({ isActive }) => {
+              return isActive ? styles.active : "";
+            }}
+            to="/"
+          >
+            Home
+          </NavLink>
         </li>
         <li>
-          <Link to="/leaderboards">Leaderboards</Link>
+          <NavLink
+            className={({ isActive }) => {
+              return isActive ? styles.active : "";
+            }}
+            to="/leaderboards"
+          >
+            Leaderboards
+          </NavLink>
         </li>
       </ul>
     </header>
