@@ -1,0 +1,16 @@
+.main {
+  padding: 1rem;
+}
+
+.main > h1 {
+  margin-top: 2rem;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.cardsContainer {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+}
