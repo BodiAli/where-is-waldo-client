@@ -5,4 +5,20 @@
 
 body {
   font-family: "Roboto";
+  background-image: linear-gradient(
+    to right top,
+    #d5fdff,
+    #dffdff,
+    #e8fdff,
+    #f2fdff,
+    #fafdff,
+    #fafdff,
+    #fbfeff,
+    #fbfeff,
+    #f5feff,
+    #eeffff,
+    #e8fffc,
+    #e4fff8
+  );
+  min-height: 100vh;
 }
