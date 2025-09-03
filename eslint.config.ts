@@ -35,9 +35,6 @@ export default tseslint.config([
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    rules: {
-      "@eslint-react/naming-convention/component-name": ["warn", "PascalCase"],
-    },
   },
   eslintConfigPrettier,
   {
