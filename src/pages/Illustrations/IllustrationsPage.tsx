@@ -1,11 +1,11 @@
 import IllustrationCard from "../../components/IllustrationCard/IllustrationCard";
 import Loader from "../../components/Loader/Loader";
-import useFetch from "../../hooks/useFetch";
+import useFetchIllustrations from "../../hooks/useFetchIllustrations";
 import type { IllustrationsType } from "../../types/types";
 import styles from "./IllustrationsPage.module.css";
 
 export default function IllustrationsPage() {
-  const { data, loading, error } = useFetch("/illustrations");
+  const { data, loading, error } = useFetchIllustrations("/illustrations");
 
   if (loading) {
     return <Loader />;
