@@ -84,5 +84,6 @@ describe("Illustration component", () => {
     expect(mockHandleClick).toHaveBeenCalled();
   });
 
+  it.skip("should render a dropdown with characters when the illustration is clicked", () => {});
   it.skip("should render a flash message when a message is passed", () => {});
 });
