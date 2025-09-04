@@ -1,9 +1,9 @@
 import { useEffect, useReducer, useState } from "react";
 import { SERVER_URL, type CharacterType, type IllustrationType } from "../types/types";
 import illustrationReducer from "../utils/illustrationReducer";
-import waldoIcon from "../assets/images/waldo-icon.webp";
-import wendaIcon from "../assets/images/wenda-icon.webp";
-import wizardIcon from "../assets/images/wizard-icon.jpeg";
+import waldoIcon from "../assets/images/waldo-icon.png";
+import wendaIcon from "../assets/images/wenda-icon.png";
+import wizardIcon from "../assets/images/wizard-icon.png";
 
 export default function useFetchIllustrations(path: string) {
   const [illustration, dispatch] = useReducer(illustrationReducer, null);
