@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
-import { SERVER_URL } from "../types/types";
+import { useEffect, useReducer, useState } from "react";
+import { SERVER_URL, type CharacterType, type IllustrationType } from "../types/types";
+import illustrationReducer from "../utils/illustrationReducer";
+import waldoIcon from "../assets/images/waldo-icon.webp";
+import wendaIcon from "../assets/images/wenda-icon.webp";
+import wizardIcon from "../assets/images/wizard-icon.jpeg";
 
 export default function useFetchIllustrations(path: string) {
-  const [data, setData] = useState<unknown>(null);
+  const [illustration, dispatch] = useReducer(illustrationReducer, null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -13,13 +17,33 @@ export default function useFetchIllustrations(path: string) {
         const res = await fetch(`${SERVER_URL}${path}`);
 
         if (!res.ok) {
-          throw new Error("Failed to fetch illustrations, please try again later");
+          if (res.status === 404) {
+            const { error } = (await res.json()) as { error: string };
+
+            throw new Error(error);
+          }
+          throw new Error("Failed to fetch illustration, please try again later");
         }
 
-        const data = (await res.json()) as unknown;
+        const { illustration } = (await res.json()) as { illustration: IllustrationType };
+
+        const updatedCharacters = illustration.Characters.map((character) => {
+          if (character.name === "Waldo") {
+            return { ...character, imageSrc: waldoIcon };
+          }
+          if (character.name === "Wenda") {
+            return { ...character, imageSrc: wendaIcon };
+          }
+          if (character.name === "Wizard") {
+            return { ...character, imageSrc: wizardIcon };
+          }
+        }) as CharacterType[];
 
         if (!ignore) {
-          setData(data);
+          dispatch({
+            type: "fetch-illustration",
+            payload: { ...illustration, Characters: updatedCharacters },
+          });
         }
       } catch (error) {
         setError(error as Error);
@@ -37,5 +61,5 @@ export default function useFetchIllustrations(path: string) {
     };
   }, [path]);
 
-  return { data, loading, error };
+  return { illustration, loading, error, dispatch };
 }
