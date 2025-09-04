@@ -1,38 +1,40 @@
-import type { Mock } from "vitest";
-import { SERVER_URL, type IllustrationType } from "../../types/types";
-import { createMemoryRouter, RouterProvider } from "react-router";
-import IllustrationPage from "../../pages/Illustration/IllustrationPage";
 import { render, screen } from "@testing-library/react";
+import type { Mock } from "vitest";
+import { createMemoryRouter, RouterProvider } from "react-router";
+import { SERVER_URL, type IllustrationType } from "../../types/types";
+import IllustrationPage from "../../pages/Illustration/IllustrationPage";
 
 describe("Illustration Page component", () => {
   it("should fetch illustration when valid illustration param is present", async () => {
-    const mockIllustration: IllustrationType = {
-      difficulty: "medium",
-      imageId: "imageId",
-      id: "illustrationId",
-      Characters: [
-        {
-          id: "waldoId",
-          illustrationId: "illustrationId",
-          isFound: false,
-          name: "Waldo",
-          imageSrc: "waldoImg",
-        },
-        {
-          id: "wendaId",
-          illustrationId: "illustrationId",
-          isFound: false,
-          name: "Wenda",
-          imageSrc: "wendaImg",
-        },
-        {
-          id: "wizardId",
-          illustrationId: "illustrationId",
-          isFound: false,
-          name: "Wizard",
-          imageSrc: "wizrdImg",
-        },
-      ],
+    const mockIllustration: { illustration: IllustrationType } = {
+      illustration: {
+        difficulty: "medium",
+        imageId: "imageId",
+        id: "illustrationId",
+        Characters: [
+          {
+            id: "waldoId",
+            illustrationId: "illustrationId",
+            isFound: false,
+            name: "Waldo",
+            imageSrc: "waldoImg",
+          },
+          {
+            id: "wendaId",
+            illustrationId: "illustrationId",
+            isFound: false,
+            name: "Wenda",
+            imageSrc: "wendaImg",
+          },
+          {
+            id: "wizardId",
+            illustrationId: "illustrationId",
+            isFound: false,
+            name: "Wizard",
+            imageSrc: "wizrdImg",
+          },
+        ],
+      },
     };
 
     window.fetch = vi.fn(() =>
@@ -42,12 +44,15 @@ describe("Illustration Page component", () => {
       })
     ) as Mock;
 
-    const router = createMemoryRouter([
-      {
-        path: "/illustrations/:illustrationId",
-        Component: IllustrationPage,
-      },
-    ]);
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/illustrations/:illustrationId",
+          Component: IllustrationPage,
+        },
+      ],
+      { initialEntries: [`/illustrations/${mockIllustration.illustration.id}`] }
+    );
 
     render(<RouterProvider router={router} />);
 
@@ -64,7 +69,5 @@ describe("Illustration Page component", () => {
     expect(window.fetch).toBeCalledWith(`${SERVER_URL}/illustrations/illustrationId`);
   });
 
-  it("should render a character dropdown when the user clicks on the illustration", () => {
-    expect(window.fetch).toBeCalledWith("kooko");
-  });
+  it.skip("should render ErrorBoundary with a not found message when illustration is not found", async () => {});
 });
