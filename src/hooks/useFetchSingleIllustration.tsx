@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from "react";
-import { SERVER_URL, type CharacterType, type IllustrationType } from "../types/types";
+import { SERVER_URL, type IllustrationType } from "../types/types";
 import illustrationReducer from "../utils/illustrationReducer";
 import waldoIcon from "../assets/images/waldo-icon.png";
 import wendaIcon from "../assets/images/wenda-icon.png";
@@ -37,7 +37,8 @@ export default function useFetchIllustrations(path: string) {
           if (character.name === "Wizard") {
             return { ...character, imageSrc: wizardIcon };
           }
-        }) as CharacterType[];
+          return character;
+        });
 
         if (!ignore) {
           dispatch({
