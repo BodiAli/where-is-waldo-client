@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 import useFetchSingleIllustration from "../../hooks/useFetchSingleIllustration";
 import Loader from "../../components/Loader/Loader";
 import styles from "./IllustrationPage.module.css";
+import Characters from "../../components/Characters/Characters";
 
 export default function IllustrationPage() {
   const { illustrationId } = useParams();
@@ -16,7 +17,9 @@ export default function IllustrationPage() {
 
   if (error) throw new Error(error.message);
 
-  console.log(illustration);
-
-  return <main className={styles.main}></main>;
+  return (
+    <main className={styles.main}>
+      <Characters characters={illustration.Characters} />
+    </main>
+  );
 }
