@@ -3,6 +3,7 @@ export interface CharacterType {
   illustrationId: string;
   isFound: boolean;
   name: string;
+  imageSrc: string;
 }
 export type IllustrationsType = { id: string; difficulty: "easy" | "medium" | "hard"; imageId: string }[];
 export interface IllustrationType {
@@ -12,3 +13,12 @@ export interface IllustrationType {
   Characters: CharacterType[];
 }
 export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+export type ACTION_TYPE =
+  | {
+      type: "fetch-illustration";
+      payload: IllustrationType;
+    }
+  | {
+      type: "update-character";
+      payload: CharacterType;
+    };
