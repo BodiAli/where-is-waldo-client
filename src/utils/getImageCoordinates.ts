@@ -4,9 +4,9 @@ export default function getImageCoordinates(e: MouseEvent<HTMLImageElement>) {
   const rect = e.currentTarget.getBoundingClientRect();
 
   // Subtract the left coordinate from mouse position.
-  const mousePositionInsideImgX = e.clientX - rect.left;
+  const mousePositionXInsideImg = e.clientX - rect.left;
   // Subtract the top coordinate from mouse position.
-  const mousePositionInsideImgY = e.clientY - rect.top;
+  const mousePositionYInsideImg = e.clientY - rect.top;
 
   /**
    * Divide image natural size by rectangle size to multiply it by mouse position
@@ -15,8 +15,8 @@ export default function getImageCoordinates(e: MouseEvent<HTMLImageElement>) {
   const scaleX = e.currentTarget.naturalWidth / rect.width;
   const scaleY = e.currentTarget.naturalHeight / rect.height;
 
-  const imgX = Math.round(mousePositionInsideImgX * scaleX);
-  const imgY = Math.round(mousePositionInsideImgY * scaleY);
+  const imgX = Math.round(mousePositionXInsideImg * scaleX);
+  const imgY = Math.round(mousePositionYInsideImg * scaleY);
 
   return { imgX, imgY };
 }
