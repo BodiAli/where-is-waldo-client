@@ -1,0 +1,40 @@
+.section {
+  position: relative;
+}
+
+.section > img {
+  width: 100%;
+}
+
+.dropdown {
+  position: absolute;
+  width: 12%;
+  /* display: none; */
+}
+
+.characterCard {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+  gap: 1rem;
+  background-color: #6de7f7a9;
+  border: 1px solid black;
+  transition: filter 200ms;
+  cursor: pointer;
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
+
+.characterCard > img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.characterCard > p {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
