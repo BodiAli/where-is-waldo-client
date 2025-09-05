@@ -29,7 +29,7 @@ describe("Illustration component", () => {
           illustrationId: "illustrationId",
           isFound: false,
           name: "Wizard",
-          imageSrc: "wizrdImg",
+          imageSrc: "wizardImg",
         },
       ],
     };
@@ -70,7 +70,7 @@ describe("Illustration component", () => {
           illustrationId: "illustrationId",
           isFound: false,
           name: "Wizard",
-          imageSrc: "wizrdImg",
+          imageSrc: "wizardImg",
         },
       ],
     };
