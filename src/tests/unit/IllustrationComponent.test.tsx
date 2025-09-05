@@ -34,14 +34,16 @@ describe("Illustration component", () => {
       ],
     };
 
-    const mockHandleClick = vi.fn();
+    const mockHandleImgClick = vi.fn();
 
-    render(<Illustration illustration={mockIllustration} onClick={mockHandleClick} message={null} />);
+    render(
+      <Illustration illustration={mockIllustration} onShowDropdown={mockHandleImgClick} message={null} />
+    );
 
     expect(screen.getByRole("img", { name: "medium illustration" })).toBeInTheDocument();
   });
 
-  it("should call onClick prop when image is clicked", async () => {
+  it("should call onClickImg prop when image is clicked", async () => {
     const user = userEvent.setup();
 
     const mockIllustration: IllustrationType = {
@@ -73,17 +75,19 @@ describe("Illustration component", () => {
       ],
     };
 
-    const mockHandleClick = vi.fn();
+    const mockHandleImgClick = vi.fn();
 
-    render(<Illustration illustration={mockIllustration} onClick={mockHandleClick} message={null} />);
+    render(
+      <Illustration illustration={mockIllustration} onShowDropdown={mockHandleImgClick} message={null} />
+    );
 
     const illustration = screen.getByRole("img", { name: "medium illustration" });
 
     await user.click(illustration);
 
-    expect(mockHandleClick).toHaveBeenCalled();
+    expect(mockHandleImgClick).toHaveBeenCalled();
   });
 
-  it.skip("should render a dropdown with characters when the illustration is clicked", () => {});
+  it.skip("should call onClickDropdown prop when dropdown character is clicked", () => {});
   it.skip("should render a flash message when a message is passed", () => {});
 });
