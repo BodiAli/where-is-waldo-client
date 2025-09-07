@@ -40,6 +40,7 @@ export default function Illustration({
                 className={styles.characterCard}
                 onClick={onClickCharacterCard}
                 data-testid="character-card"
+                data-characterid={character.id}
               >
                 <img src={character.imageSrc} alt={`${character.name} character`} />
                 <p>{character.name}</p>
@@ -49,10 +50,12 @@ export default function Illustration({
         </ul>
       </div>
       <img
-        src={illustration.imageId}
+        src={illustration.imageSrc}
         alt={`${illustration.difficulty} illustration`}
         onClick={onShowDropdown}
       />
+
+      <p>{message}</p>
     </section>
   );
 }
