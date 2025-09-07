@@ -6,28 +6,41 @@ export default function Illustration({
   message,
   illustration,
   onShowDropdown,
-  onClickDropdown,
+  onClickCharacterCard,
   dropdownPosition,
   dropdownRef,
+  isDropdownShown,
 }: {
   illustration: IllustrationType;
   message: string | null;
   onShowDropdown: (e: MouseEvent<HTMLImageElement>) => void;
-  onClickDropdown: (e: MouseEvent<HTMLDivElement>) => void;
+  onClickCharacterCard: (e: MouseEvent<HTMLDivElement>) => void;
   dropdownPosition: { top: number; left: number };
   dropdownRef: Ref<HTMLDivElement>;
+  isDropdownShown: boolean;
 }) {
   return (
     <section className={styles.section}>
       <div
         ref={dropdownRef}
-        className={styles.dropdown}
-        style={{ left: dropdownPosition.left, top: dropdownPosition.top }}
+        className={`${styles.dropdown} ${isDropdownShown ? styles.shown : ""}`}
+        style={{
+          left: dropdownPosition.left,
+          top: dropdownPosition.top,
+          // Hide element using inline styles because jsdom fails to load stylesheets hence the "toBeVisible" assertion returns false positives
+          display: isDropdownShown ? "block" : "none",
+        }}
+        data-testid="characters-dropdown"
       >
         <ul>
           {illustration.Characters.map((character) => {
             return (
-              <div key={character.id} className={styles.characterCard} onClick={onClickDropdown}>
+              <div
+                key={character.id}
+                className={styles.characterCard}
+                onClick={onClickCharacterCard}
+                data-testid="character-card"
+              >
                 <img src={character.imageSrc} alt={`${character.name} character`} />
                 <p>{character.name}</p>
               </div>
