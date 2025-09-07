@@ -96,6 +96,8 @@ export default function IllustrationPage() {
   }
 
   function handleValidateCharacter(e: MouseEvent<HTMLDivElement>) {
+    setIsDropdownShown(false);
+
     const { characterid: characterId } = e.currentTarget.dataset;
 
     if (!illustration) {
@@ -117,17 +119,19 @@ export default function IllustrationPage() {
 
         if (!res.ok) {
           const { error } = (await res.json()) as { error: string };
-
           setMessage(error);
           return;
         }
 
-        const { character, msg } = (await res.json()) as {
+        const { character, msg, success } = (await res.json()) as {
           character: CharacterType;
           msg: string;
+          success: boolean;
         };
 
-        dispatch({ type: "update-character", payload: character });
+        if (success) {
+          dispatch({ type: "update-character", payload: character });
+        }
         setMessage(msg);
       } catch (error) {
         throw new Error((error as Error).message);
