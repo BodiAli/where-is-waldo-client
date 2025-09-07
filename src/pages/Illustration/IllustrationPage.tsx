@@ -9,6 +9,7 @@ import styles from "./IllustrationPage.module.css";
 
 export default function IllustrationPage() {
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [isDropdownShown, setIsDropdownShown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { illustrationId } = useParams();
@@ -28,7 +29,12 @@ export default function IllustrationPage() {
       throw new Error("Dropdown is null");
     }
 
-    // + or - Number in setting position is to give room for cursor.
+    if (isDropdownShown) {
+      setIsDropdownShown(false);
+      // Return early because it's unnecessary for the rest of the function to run if dropdown is hidden
+      return;
+    }
+    setIsDropdownShown(true);
 
     const imgRect = e.currentTarget.getBoundingClientRect();
 
@@ -36,10 +42,11 @@ export default function IllustrationPage() {
     const mousePositionYInsideImg = e.clientY - imgRect.top;
 
     /* eslint-disable-next-line @eslint-react/dom/no-flush-sync --
-     * flushSync is necessary to get the updated dropdown bounding client rect positions after the dropdown position is updated
+     * flushSync is necessary to get the updated dropdown bounding client rect positions after the dropdown position is updated,
      * otherwise it will get the old position. (e.g., left position)
      **/
     flushSync(() => {
+      // + or - Number in setting position is to give room for the cursor.
       setDropdownPosition({ left: mousePositionXInsideImg + 5, top: mousePositionYInsideImg + 5 });
     });
 
@@ -87,9 +94,10 @@ export default function IllustrationPage() {
       <Illustration
         illustration={illustration}
         onShowDropdown={handleShowDropdown}
-        onClickDropdown={handleValidateCharacter}
+        onClickCharacterCard={handleValidateCharacter}
         dropdownPosition={dropdownPosition}
         dropdownRef={dropdownRef}
+        isDropdownShown={isDropdownShown}
         message={null}
       />
     </main>
