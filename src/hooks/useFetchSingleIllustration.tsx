@@ -1,9 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 import { SERVER_URL, type IllustrationType } from "../types/types";
 import illustrationReducer from "../utils/illustrationReducer";
-import waldoIcon from "../assets/images/waldo-icon.png";
-import wendaIcon from "../assets/images/wenda-icon.png";
-import wizardIcon from "../assets/images/wizard-icon.png";
 
 export default function useFetchIllustrations(path: string) {
   const [illustration, dispatch] = useReducer(illustrationReducer, null);
@@ -27,23 +24,10 @@ export default function useFetchIllustrations(path: string) {
 
         const { illustration } = (await res.json()) as { illustration: IllustrationType };
 
-        const updatedCharacters = illustration.Characters.map((character) => {
-          if (character.name === "Waldo") {
-            return { ...character, imageSrc: waldoIcon };
-          }
-          if (character.name === "Wenda") {
-            return { ...character, imageSrc: wendaIcon };
-          }
-          if (character.name === "Wizard") {
-            return { ...character, imageSrc: wizardIcon };
-          }
-          return character;
-        });
-
         if (!ignore) {
           dispatch({
             type: "fetch-illustration",
-            payload: { ...illustration, Characters: updatedCharacters },
+            payload: illustration,
           });
         }
       } catch (error) {
