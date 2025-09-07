@@ -5,11 +5,11 @@ export interface CharacterType {
   name: string;
   imageSrc: string;
 }
-export type IllustrationsType = { id: string; difficulty: "easy" | "medium" | "hard"; imageId: string }[];
+export type IllustrationsType = { id: string; difficulty: "easy" | "medium" | "hard"; imageSrc: string }[];
 export interface IllustrationType {
   id: string;
   difficulty: "easy" | "medium" | "hard";
-  imageId: string;
+  imageSrc: string;
   Characters: CharacterType[];
 }
 export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
