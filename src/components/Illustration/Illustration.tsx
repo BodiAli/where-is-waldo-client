@@ -10,17 +10,23 @@ export default function Illustration({
   dropdownPosition,
   dropdownRef,
   isDropdownShown,
+  illustrationSectionRef,
+  messageRef,
+  messagePosition,
 }: {
   illustration: IllustrationType;
-  message: string | null;
+  message: { content: string; color: string };
   onShowDropdown: (e: MouseEvent<HTMLImageElement>) => void;
   onClickCharacterCard: (e: MouseEvent<HTMLDivElement>) => void;
   dropdownPosition: { top: number; left: number };
   dropdownRef: Ref<HTMLDivElement>;
   isDropdownShown: boolean;
+  illustrationSectionRef: Ref<HTMLElement>;
+  messageRef: Ref<HTMLParagraphElement>;
+  messagePosition: { top: number; left: number };
 }) {
   return (
-    <section className={styles.section}>
+    <section ref={illustrationSectionRef} className={styles.section}>
       <div
         ref={dropdownRef}
         className={`${styles.dropdown} ${isDropdownShown ? styles.shown : ""}`}
@@ -55,7 +61,13 @@ export default function Illustration({
         onClick={onShowDropdown}
       />
 
-      <p>{message}</p>
+      <p
+        ref={messageRef}
+        className={`${styles.message} ${message.content ? styles.show : ""}`}
+        style={{ left: messagePosition.left, top: messagePosition.top, backgroundColor: message.color }}
+      >
+        {message.content}
+      </p>
     </section>
   );
 }
