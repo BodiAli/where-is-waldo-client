@@ -9,12 +9,25 @@ import styles from "./IllustrationPage.module.css";
 import { SERVER_URL, type CharacterType } from "../../types/types";
 import getImageCoordinates from "../../utils/getImageCoordinates";
 
+type StripReadonly<TObj> = {
+  -readonly [K in keyof TObj]: TObj[K];
+};
+
 export default function IllustrationPage() {
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [isDropdownShown, setIsDropdownShown] = useState(false);
   const [imgCoordinates, setImgCoordinates] = useState<{ xPosition: number; yPosition: number } | null>(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<{
+    content: string;
+    color: "crimson" | "green" | "";
+  }>({
+    content: "",
+    color: "",
+  });
+  const [messagePosition, setMessagePosition] = useState({ top: 0, left: 0 });
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const illustrationSectionRef = useRef<HTMLElement>(null);
+  const messageRef = useRef<HTMLParagraphElement>(null);
 
   const { illustrationId } = useParams();
 
@@ -62,9 +75,6 @@ export default function IllustrationPage() {
 
     const dropdownRect = dropdownRef.current.getBoundingClientRect();
 
-    type StripReadonly<TObj> = {
-      -readonly [K in keyof TObj]: TObj[K];
-    };
     const dropdownRectRelativeToImage: Pick<StripReadonly<typeof dropdownRect>, "right" | "bottom"> = {
       bottom: dropdownRect.bottom - imgRect.bottom,
       right: dropdownRect.right - imgRect.right,
@@ -106,6 +116,48 @@ export default function IllustrationPage() {
     if (!characterId) {
       throw new Error("Character not found");
     }
+    if (!imgCoordinates) {
+      throw new Error("Image coordinates not found");
+    }
+    if (!illustrationSectionRef.current) {
+      throw new Error("Illustration section not found");
+    }
+    if (!messageRef.current) {
+      throw new Error("Message ref not found");
+    }
+
+    const illustrationSectionRect = illustrationSectionRef.current.getBoundingClientRect();
+    const mousePositionInsideSection = {
+      x: e.clientX - illustrationSectionRect.left,
+      y: e.clientY - illustrationSectionRect.top,
+    };
+
+    /* eslint-disable-next-line @eslint-react/dom/no-flush-sync --
+     * flushSync is necessary to get the updated message bounding client rect positions after the character card is clicked,
+     * otherwise it will get the old position. (e.g., left position)
+     **/
+    flushSync(() => {
+      setMessagePosition({ left: mousePositionInsideSection.x, top: mousePositionInsideSection.y - 50 });
+    });
+
+    const messageRect = messageRef.current.getBoundingClientRect();
+
+    const messageRectRelativeToSection: Pick<StripReadonly<typeof messageRect>, "bottom" | "right"> = {
+      bottom: messageRect.bottom - illustrationSectionRect.bottom,
+      right: messageRect.right - illustrationSectionRect.right,
+    };
+
+    if (messageRectRelativeToSection.right >= 0) {
+      setMessagePosition({
+        left: mousePositionInsideSection.x - messageRect.width - 40,
+        top: mousePositionInsideSection.y - 50,
+      });
+    }
+
+    setMessage({
+      color: "",
+      content: "",
+    });
 
     const handler = async () => {
       try {
@@ -119,7 +171,10 @@ export default function IllustrationPage() {
 
         if (!res.ok) {
           const { error } = (await res.json()) as { error: string };
-          setMessage(error);
+          setMessage({
+            content: error,
+            color: "crimson",
+          });
           return;
         }
 
@@ -131,8 +186,17 @@ export default function IllustrationPage() {
 
         if (success) {
           dispatch({ type: "update-character", payload: character });
+          setMessage({
+            content: msg,
+            color: "green",
+          });
+          return;
         }
-        setMessage(msg);
+
+        setMessage({
+          content: msg,
+          color: "crimson",
+        });
       } catch (error) {
         throw new Error((error as Error).message);
       }
@@ -152,7 +216,10 @@ export default function IllustrationPage() {
         dropdownPosition={dropdownPosition}
         dropdownRef={dropdownRef}
         isDropdownShown={isDropdownShown}
+        illustrationSectionRef={illustrationSectionRef}
+        messageRef={messageRef}
         message={message}
+        messagePosition={messagePosition}
       />
     </main>
   );
