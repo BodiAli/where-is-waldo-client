@@ -4,6 +4,7 @@
 
 .section > img {
   width: 100%;
+  cursor: url("/images/cursor-custom-image.png"), auto;
 }
 
 .dropdown {
@@ -36,4 +37,30 @@
 .characterCard > p {
   font-weight: 500;
   font-size: 1.1rem;
+}
+
+.message {
+  position: absolute;
+  font-size: 1.2rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+}
+
+.message.show {
+  animation-name: flash-message;
+  animation-duration: 2000ms;
+  animation-delay: 1000ms;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flash-message {
+  from {
+    opacity: 1;
+    display: block;
+  }
+
+  to {
+    opacity: 0;
+    display: none;
+  }
 }
