@@ -62,9 +62,15 @@ export default function Illustration({
       />
 
       <p
+        data-testid="flash-message"
         ref={messageRef}
         className={`${styles.message} ${message.content ? styles.show : ""}`}
-        style={{ left: messagePosition.left, top: messagePosition.top, backgroundColor: message.color }}
+        style={{
+          left: messagePosition.left,
+          top: messagePosition.top,
+          backgroundColor: message.color,
+          display: !message.content ? "none" : "block",
+        }}
       >
         {message.content}
       </p>
