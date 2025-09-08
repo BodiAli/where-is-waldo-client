@@ -39,9 +39,9 @@ export default function IllustrationPage() {
     `/illustrations/${illustrationId}`
   );
 
-  if (loading || !illustration) return <Loader />;
-
   if (error) throw new Error(error.message);
+
+  if (loading || !illustration) return <Loader />;
 
   function handleShowDropdown(e: MouseEvent<HTMLImageElement>) {
     if (!dropdownRef.current) {
