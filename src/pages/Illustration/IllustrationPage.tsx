@@ -163,6 +163,7 @@ export default function IllustrationPage() {
       try {
         const res = await fetch(`${SERVER_URL}/illustrations/${illustration.id}/${characterId}`, {
           method: "POST",
+          credentials: "include",
           headers: {
             "Content-type": "application/json",
           },
@@ -178,11 +179,17 @@ export default function IllustrationPage() {
           return;
         }
 
-        const { character, msg, success } = (await res.json()) as {
+        const { character, msg, success, duration } = (await res.json()) as {
           character: CharacterType;
           msg: string;
           success: boolean;
+          duration: number;
         };
+
+        // The server sends duration only if game is won.
+        if (duration) {
+          return;
+        }
 
         if (success) {
           dispatch({ type: "update-character", payload: character });
