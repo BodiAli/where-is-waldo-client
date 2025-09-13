@@ -11,7 +11,9 @@ export default function useFetchIllustrations(path: string) {
     let ignore = false;
     async function fetchData() {
       try {
-        const res = await fetch(`${SERVER_URL}${path}`);
+        const res = await fetch(`${SERVER_URL}${path}`, {
+          credentials: "include",
+        });
 
         if (!res.ok) {
           if (res.status === 404) {
