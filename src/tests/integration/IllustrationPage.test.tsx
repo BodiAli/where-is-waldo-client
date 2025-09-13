@@ -506,7 +506,7 @@ describe("Illustration Page component", () => {
     expect(waldoIcon).toHaveClass(/found/);
   });
 
-  it("should display a modal to ask for username after all characters are found", async () => {
+  it.skip("should display a modal to ask for username after all characters are found", async () => {
     // IMPLEMENT
   });
 });
