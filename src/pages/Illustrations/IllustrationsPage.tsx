@@ -7,12 +7,12 @@ import styles from "./IllustrationsPage.module.css";
 export default function IllustrationsPage() {
   const { data, loading, error } = useFetchIllustrations("/illustrations");
 
-  if (loading) {
-    return <Loader />;
-  }
-
   if (error) {
     throw new Error(error.message);
+  }
+
+  if (loading) {
+    return <Loader />;
   }
 
   const { illustrations } = data as { illustrations: IllustrationsType };
