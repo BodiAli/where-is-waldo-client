@@ -14,7 +14,7 @@ export default function Modal({
     <dialog ref={dialogRef} className={styles.dialog}>
       <div className={styles.dialogContent}>
         <h2>You won!</h2>
-        <p>It took you {score} seconds to complete!</p>
+        <p data-testid="score">It took you {score} seconds to complete.</p>
         <form>
           <label>
             Please enter your name:
