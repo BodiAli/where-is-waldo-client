@@ -74,7 +74,9 @@ describe("Illustration Page component", () => {
 
     expect(illustration).toBeInTheDocument();
 
-    expect(window.fetch).toBeCalledWith(`${SERVER_URL}/illustrations/illustrationId`);
+    expect(window.fetch).toBeCalledWith(`${SERVER_URL}/illustrations/illustrationId`, {
+      credentials: "include",
+    });
   });
 
   it("should render ErrorBoundary with a not found message when illustration is not found", async () => {
@@ -506,7 +508,85 @@ describe("Illustration Page component", () => {
     expect(waldoIcon).toHaveClass(/found/);
   });
 
-  it.skip("should display a modal to ask for username after all characters are found", async () => {
-    // IMPLEMENT
+  it("should call showModal method", async () => {
+    const user = userEvent.setup();
+
+    HTMLDialogElement.prototype.showModal = vi.fn();
+
+    const mockIllustration: { illustration: IllustrationType } = {
+      illustration: {
+        difficulty: "medium",
+        imageSrc: "imageSrc",
+        id: "illustrationId",
+        Characters: [
+          {
+            id: "waldoId",
+            illustrationId: "illustrationId",
+            isFound: true,
+            name: "Waldo",
+            imageSrc: "waldoImg",
+          },
+          {
+            id: "wendaId",
+            illustrationId: "illustrationId",
+            isFound: true,
+            name: "Wenda",
+            imageSrc: "wendaImg",
+          },
+          {
+            id: "wizardId",
+            illustrationId: "illustrationId",
+            isFound: false,
+            name: "Wizard",
+            imageSrc: "wizardImg",
+          },
+        ],
+      },
+    };
+
+    const mockClickResponse: { msg: string; duration: number } = {
+      msg: "You found Wizard",
+      duration: 1000,
+    };
+
+    window.fetch = vi
+      .fn()
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: vi.fn(() => Promise.resolve(mockIllustration)),
+        })
+      )
+      .mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          json: vi.fn(() => Promise.resolve(mockClickResponse)),
+        })
+      );
+
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/illustrations/:illustrationId",
+          Component: IllustrationPage,
+        },
+      ],
+      { initialEntries: [`/illustrations/${mockIllustration.illustration.id}`] }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const illustration = await screen.findByRole("img", { name: "medium illustration" });
+    const dialogElement = await screen.findByRole("dialog", { hidden: true });
+
+    expect(dialogElement).not.toBeVisible();
+
+    await user.click(illustration);
+
+    const wizardCard = (await screen.findAllByTestId("character-card"))[2];
+
+    await user.click(wizardCard);
+
+    expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalledOnce();
   });
 });
