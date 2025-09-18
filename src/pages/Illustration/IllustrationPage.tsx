@@ -5,9 +5,10 @@ import useFetchSingleIllustration from "../../hooks/useFetchSingleIllustration";
 import Loader from "../../components/Loader/Loader";
 import Characters from "../../components/Characters/Characters";
 import Illustration from "../../components/Illustration/Illustration";
-import styles from "./IllustrationPage.module.css";
+import Modal from "../../components/Modal/Modal";
 import { SERVER_URL, type CharacterType } from "../../types/types";
 import getImageCoordinates from "../../utils/getImageCoordinates";
+import styles from "./IllustrationPage.module.css";
 
 type StripReadonly<TObj> = {
   -readonly [K in keyof TObj]: TObj[K];
@@ -25,9 +26,12 @@ export default function IllustrationPage() {
     color: "",
   });
   const [messagePosition, setMessagePosition] = useState({ top: 0, left: 0 });
+  const [duration, setDuration] = useState<number | null>(null);
+  const [isGameWon, setIsGameWon] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const illustrationSectionRef = useRef<HTMLElement>(null);
   const messageRef = useRef<HTMLParagraphElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const { illustrationId } = useParams();
 
@@ -160,6 +164,10 @@ export default function IllustrationPage() {
     });
 
     const handler = async () => {
+      if (!dialogRef.current) {
+        throw new Error("Dialog ref not found");
+      }
+
       try {
         const res = await fetch(`${SERVER_URL}/illustrations/${illustration.id}/${characterId}`, {
           method: "POST",
@@ -183,11 +191,14 @@ export default function IllustrationPage() {
           character: CharacterType;
           msg: string;
           success: boolean;
-          duration: number;
+          duration?: number;
         };
 
         // The server sends duration only if game is won.
         if (duration) {
+          setDuration(duration);
+          dialogRef.current.showModal();
+          setIsGameWon(true);
           return;
         }
 
@@ -214,20 +225,25 @@ export default function IllustrationPage() {
 
   return (
     <main className={styles.main}>
-      <Characters characters={illustration.Characters} />
-      <hr />
-      <Illustration
-        illustration={illustration}
-        onShowDropdown={handleShowDropdown}
-        onClickCharacterCard={handleValidateCharacter}
-        dropdownPosition={dropdownPosition}
-        dropdownRef={dropdownRef}
-        isDropdownShown={isDropdownShown}
-        illustrationSectionRef={illustrationSectionRef}
-        messageRef={messageRef}
-        message={message}
-        messagePosition={messagePosition}
-      />
+      {!isGameWon && (
+        <>
+          <Characters characters={illustration.Characters} />
+          <hr />
+          <Illustration
+            illustration={illustration}
+            onShowDropdown={handleShowDropdown}
+            onClickCharacterCard={handleValidateCharacter}
+            dropdownPosition={dropdownPosition}
+            dropdownRef={dropdownRef}
+            isDropdownShown={isDropdownShown}
+            illustrationSectionRef={illustrationSectionRef}
+            messageRef={messageRef}
+            message={message}
+            messagePosition={messagePosition}
+          />
+        </>
+      )}
+      <Modal dialogRef={dialogRef} duration={duration} />
     </main>
   );
 }
