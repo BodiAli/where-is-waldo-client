@@ -10,7 +10,7 @@ export default function getImageCoordinates(e: MouseEvent<HTMLImageElement>) {
 
   /**
    * Divide image natural size by rectangle size to multiply it by mouse position
-   * to get the exact size of a click regardless of screen size.
+   * to get the exact position of a click regardless of screen size.
    *  */
   const scaleX = e.currentTarget.naturalWidth / rect.width;
   const scaleY = e.currentTarget.naturalHeight / rect.height;
