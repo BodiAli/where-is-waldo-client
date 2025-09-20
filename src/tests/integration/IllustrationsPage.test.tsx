@@ -12,17 +12,17 @@ describe("IllustrationsPage Component", () => {
         {
           difficulty: "easy",
           id: "illustrationId1",
-          imageId: "imageId",
+          imageSrc: "imageSrc",
         },
         {
           difficulty: "medium",
           id: "illustrationId2",
-          imageId: "imageId",
+          imageSrc: "imageSrc",
         },
         {
           difficulty: "hard",
           id: "illustrationId3",
-          imageId: "imageId",
+          imageSrc: "imageSrc",
         },
       ],
     };
@@ -62,17 +62,17 @@ describe("IllustrationsPage Component", () => {
         {
           difficulty: "easy",
           id: "illustrationId1",
-          imageId: "imageId",
+          imageSrc: "imageId",
         },
         {
           difficulty: "medium",
           id: "illustrationId2",
-          imageId: "imageId",
+          imageSrc: "imageId",
         },
         {
           difficulty: "hard",
           id: "illustrationId3",
-          imageId: "imageId",
+          imageSrc: "imageId",
         },
       ],
     };
