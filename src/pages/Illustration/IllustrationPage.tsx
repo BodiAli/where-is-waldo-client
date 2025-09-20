@@ -243,7 +243,7 @@ export default function IllustrationPage() {
           />
         </>
       )}
-      <Modal dialogRef={dialogRef} duration={duration} illustrationId={illustrationId}/>
+      <Modal dialogRef={dialogRef} duration={duration} illustrationId={illustrationId} />
     </main>
   );
 }
