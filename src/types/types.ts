@@ -12,6 +12,11 @@ export interface IllustrationType {
   imageSrc: string;
   Characters: CharacterType[];
 }
+export type LeaderboardsType = {
+  id: string;
+  illustrationId: string;
+  Illustration: Omit<IllustrationType, "Characters">;
+}[];
 export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 export type ACTION_TYPE =
   | {
