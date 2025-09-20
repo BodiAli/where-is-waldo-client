@@ -3,8 +3,8 @@ import AppLayout from "../components/AppLayout/AppLayout";
 import IllustrationPage from "../pages/Illustration/IllustrationPage";
 import IllustrationsPage from "../pages/Illustrations/IllustrationsPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
-import Leaderboards from "../pages/Leaderboards/Leaderboards";
-import Leaderboard from "../pages/Leaderboard/Leaderboard";
+import LeaderboardsPage from "../pages/Leaderboards/LeaderboardsPage";
+import LeaderboardPage from "../pages/Leaderboard/LeaderboardPage";
 import ErrorHandler from "../components/ErrorHandler/ErrorHandler";
 
 const routes: RouteObject[] = [
@@ -26,11 +26,11 @@ const routes: RouteObject[] = [
           },
           {
             path: "leaderboards",
-            Component: Leaderboards,
+            Component: LeaderboardsPage,
           },
           {
             path: "leaderboards/:leaderboardId",
-            Component: Leaderboard,
+            Component: LeaderboardPage,
           },
         ],
       },
