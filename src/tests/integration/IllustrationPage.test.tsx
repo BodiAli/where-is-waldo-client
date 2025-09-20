@@ -589,4 +589,93 @@ describe("Illustration Page component", () => {
 
     expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalledOnce();
   });
+
+  it("should navigate to '/leaderboards/leaderboardId' when form is submitted", async () => {
+    const user = userEvent.setup();
+
+    HTMLDialogElement.prototype.showModal = vi.fn();
+
+    const mockIllustration: { illustration: IllustrationType } = {
+      illustration: {
+        difficulty: "medium",
+        imageSrc: "imageSrc",
+        id: "illustrationId",
+        Characters: [
+          {
+            id: "waldoId",
+            illustrationId: "illustrationId",
+            isFound: true,
+            name: "Waldo",
+            imageSrc: "waldoImg",
+          },
+          {
+            id: "wendaId",
+            illustrationId: "illustrationId",
+            isFound: true,
+            name: "Wenda",
+            imageSrc: "wendaImg",
+          },
+          {
+            id: "wizardId",
+            illustrationId: "illustrationId",
+            isFound: false,
+            name: "Wizard",
+            imageSrc: "wizardImg",
+          },
+        ],
+      },
+    };
+
+    const mockClickResponse: { msg: string; duration: number } = {
+      msg: "You found Wizard",
+      duration: 1000,
+    };
+
+    window.fetch = vi
+      .fn()
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          ok: true,
+          json: vi.fn(() => Promise.resolve(mockIllustration)),
+        })
+      )
+      .mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          json: vi.fn(() => Promise.resolve(mockClickResponse)),
+        })
+      )
+      .mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          json: vi.fn(() => Promise.resolve({ leaderboardId: "leaderboardId" })),
+        })
+      );
+
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/illustrations/:illustrationId",
+          Component: IllustrationPage,
+        },
+        {
+          path: "/leaderboards/:leaderboardId",
+          element: <h1>Leaderboard page</h1>,
+        },
+      ],
+      { initialEntries: [`/illustrations/${mockIllustration.illustration.id}`] }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const nameInput = await screen.findByRole("textbox", { hidden: true, name: "Please enter your name:" });
+    const submitButton = await screen.findByRole("button", { hidden: true, name: "Submit" });
+
+    await user.type(nameInput, "Bodi");
+
+    await user.click(submitButton);
+
+    expect(router.state.location.pathname).toBe("/leaderboards/leaderboardId");
+    expect(screen.getByRole("heading", { level: 1, name: "Leaderboard page" })).toBeInTheDocument();
+  });
 });
