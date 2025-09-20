@@ -27,7 +27,9 @@ export default function useFetchSingleLeaderboard(leaderboardId: string) {
       } catch (error) {
         setError(error as Error);
       } finally {
-        setLoading(false);
+        if (!ignore) {
+          setLoading(false);
+        }
       }
     }
 
