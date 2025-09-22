@@ -228,4 +228,44 @@ describe("LeaderboardPage component", () => {
     expect(thirdRowCells[1]).toHaveTextContent("Jane");
     expect(thirdRowCells[2]).toHaveTextContent((6000 / 1000).toFixed(2));
   });
+
+  it("should render a leaderboard is empty paragraph if leaderboard Users are empty", async () => {
+    const mockLeaderboard: { leaderboard: LeaderboardType } = {
+      leaderboard: {
+        id: "leaderboardId",
+        illustrationId: "illustrationId",
+        Illustration: {
+          difficulty: "medium",
+          id: "illustrationId",
+          imageSrc: "imageSrc",
+        },
+        Users: [],
+      },
+    };
+
+    window.fetch = vi.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        json: vi.fn(() => Promise.resolve(mockLeaderboard)),
+      })
+    );
+
+    const router = createMemoryRouter(
+      [
+        {
+          Component: LeaderboardPage,
+          path: "leaderboards/:leaderboardId",
+        },
+      ],
+      {
+        initialEntries: ["/leaderboards/leaderboardId"],
+      }
+    );
+
+    render(<RouterProvider router={router} />);
+
+    const paragraphElement = await screen.findByRole("paragraph");
+
+    expect(paragraphElement).toHaveTextContent("Leaderboard is empty!");
+  });
 });
