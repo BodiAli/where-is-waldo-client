@@ -31,7 +31,28 @@ export default function LeaderboardPage() {
           leaderboard.Illustration.difficulty.slice(1)
         } difficulty leaderboard`}
       </h2>
-      <div></div>
+      <div className={styles.container}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Name</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderboard.Users.map((user, index) => {
+              return (
+                <tr key={user.id}>
+                  <td>{index + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{`${(user.score / 1000).toFixed(2)}s`}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }
