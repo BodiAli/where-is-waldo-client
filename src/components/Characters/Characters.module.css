@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   gap: 4rem;
+  padding: 0 1rem;
 }
 
 .container > h2 {
@@ -31,4 +32,41 @@
 
 .charactersContainer > img.found {
   mix-blend-mode: luminosity;
+}
+
+@media (max-width: 800px) {
+  .charactersContainer > img {
+    width: 80px;
+    height: 110px;
+  }
+
+  .container {
+    gap: 2rem;
+  }
+
+  .container > h2 {
+    font-size: 1.4rem;
+  }
+
+  .charactersContainer {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .charactersContainer > img {
+    width: 60px;
+    height: 70px;
+  }
+
+  .container > h2 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 370px) {
+  .charactersContainer > img {
+    width: 45px;
+    height: 60px;
+  }
 }

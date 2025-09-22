@@ -10,13 +10,11 @@
 }
 
 .container {
-  display: flex;
-  justify-content: center;
+  display: grid;
 }
 
 .table {
   border: 2px solid rgb(140 140 140);
-  width: 50%;
 }
 
 .table thead {
@@ -43,4 +41,5 @@
 
 .empty {
   font-size: 1.4rem;
+  text-align: center;
 }
