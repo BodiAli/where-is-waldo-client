@@ -32,26 +32,29 @@ export default function LeaderboardPage() {
         } difficulty leaderboard`}
       </h2>
       <div className={styles.container}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th scope="col">Rank</th>
-              <th scope="col">Name</th>
-              <th scope="col">Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.Users.map((user, index) => {
-              return (
-                <tr key={user.id}>
-                  <td>{index + 1}</td>
-                  <td>{user.name}</td>
-                  <td>{`${(user.score / 1000).toFixed(2)}s`}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {leaderboard.Users.length > 0 && (
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">Name</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.Users.map((user, index) => {
+                return (
+                  <tr key={user.id}>
+                    <td>{index + 1}</td>
+                    <td>{user.name}</td>
+                    <td>{`${(user.score / 1000).toFixed(2)}s`}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+        {leaderboard.Users.length === 0 && <p className={styles.empty}>Leaderboard is empty!</p>}
       </div>
     </main>
   );
