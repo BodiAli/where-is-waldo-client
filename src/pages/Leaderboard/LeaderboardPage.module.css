@@ -1,0 +1,46 @@
+.main {
+  padding: 1rem;
+}
+
+.main > h2 {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.table {
+  border: 2px solid rgb(140 140 140);
+  width: 50%;
+}
+
+.table thead {
+  background-color: rgb(228 240 245);
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.table td {
+  text-align: center;
+}
+
+.table td,
+.table th {
+  border: 1px solid rgb(160 160 160);
+  padding: 1rem;
+}
+
+.table tbody > tr:nth-of-type(even) {
+  background-color: rgb(237 238 242);
+}
+
+.empty {
+  font-size: 1.4rem;
+}
