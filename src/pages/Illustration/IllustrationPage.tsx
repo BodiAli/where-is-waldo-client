@@ -194,6 +194,11 @@ export default function IllustrationPage() {
           duration?: number;
         };
 
+        console.log("CHARACTER", character);
+        console.log("MESSAGE", msg);
+        console.log("SUCCESS", success);
+        console.log("DURATION", duration);
+
         // The server sends duration only if game is won.
         if (duration) {
           setDuration(duration);
