@@ -1,4 +1,4 @@
-import { type FormEvent, type RefObject } from "react";
+import { useState, type FormEvent, type RefObject } from "react";
 import { useNavigate } from "react-router";
 import { SERVER_URL } from "../../types/types";
 import styles from "./Modal.module.css";
@@ -12,6 +12,7 @@ export default function Modal({
   duration: number | null;
   illustrationId: string;
 }) {
+  const [errors, setErrors] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const score = (duration === null ? 0 : duration / 1000).toFixed(2);
@@ -34,6 +35,12 @@ export default function Modal({
         });
 
         if (!res.ok) {
+          if (res.status === 400) {
+            const { error } = (await res.json()) as { error: string };
+
+            setErrors([error]);
+            return;
+          }
           throw new Error("Failed to create score, please try again.");
         }
 
@@ -41,7 +48,7 @@ export default function Modal({
 
         void navigate(`/leaderboards/${leaderboardId}`);
       } catch (error) {
-        throw new Error((error as Error).message);
+        setErrors([(error as Error).message]);
       }
     };
 
@@ -51,12 +58,19 @@ export default function Modal({
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
       <div className={styles.dialogContent}>
+        {errors.length !== 0 && (
+          <ul className={styles.errors}>
+            {errors.map((error) => {
+              return <li key={error}>{error}</li>;
+            })}
+          </ul>
+        )}
         <h2>You won!</h2>
         <p data-testid="score">It took you {score} seconds to complete.</p>
         <form onSubmit={handleCreateScore} role="form">
           <label>
             Please enter your name:
-            <input type="text" name="name" autoComplete="name" />
+            <input type="text" name="name" autoComplete="name" required />
           </label>
           <button type="submit">Submit</button>
         </form>
