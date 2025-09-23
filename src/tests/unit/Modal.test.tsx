@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import userEvent from "@testing-library/user-event";
 import type { RefObject } from "react";
@@ -20,6 +20,44 @@ describe("Modal component", () => {
     render(<RouterProvider router={router} />);
 
     expect(screen.getByRole("dialog", { hidden: true })).toBeInTheDocument();
+  });
+
+  it("should render errors if request failed", async () => {
+    const user = userEvent.setup();
+
+    window.fetch = vi.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: false,
+        status: 400,
+        json: vi.fn(() => Promise.resolve({ error: "Please provide a name" })),
+      })
+    );
+
+    const dialogRef: RefObject<HTMLDialogElement> = {
+      current: document.createElement("dialog"),
+    };
+
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: <Modal dialogRef={dialogRef} duration={1000} illustrationId="illustrationId" />,
+      },
+    ]);
+
+    render(<RouterProvider router={router} />);
+
+    const nameInput = screen.getByRole("textbox", { name: "Please enter your name:", hidden: true });
+    const submitButton = screen.getByRole("button", { name: "Submit", hidden: true });
+
+    await user.type(nameInput, "  ");
+
+    await user.click(submitButton);
+
+    const list = screen.getByRole("list", { hidden: true });
+    const listItem = within(list).getByRole("listitem", { hidden: true });
+
+    expect(list).toBeInTheDocument();
+    expect(listItem).toHaveTextContent("Please provide a name");
   });
 
   it("should render how much time it took the user to win the game", () => {
