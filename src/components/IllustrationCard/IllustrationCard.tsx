@@ -8,7 +8,9 @@ export default function IllustrationCard({ id, imageSrc, difficulty }: Omit<Illu
   return (
     <div className={styles.card}>
       <h2>{difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</h2>
-      <img src={imageSrc} alt={`${difficulty} illustration`} />
+      <div className={styles.imgContainer}>
+        <img src={imageSrc} alt={`${difficulty} illustration`} />
+      </div>
       <button
         type="button"
         onClick={() => {
