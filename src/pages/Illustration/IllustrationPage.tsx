@@ -26,7 +26,7 @@ export default function IllustrationPage() {
     color: "",
   });
   const [messagePosition, setMessagePosition] = useState({ top: 0, left: 0 });
-  const [duration, setDuration] = useState<number | null>(null);
+  const [durationTook, setDurationTook] = useState<number | null>(null);
   const [isGameWon, setIsGameWon] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const illustrationSectionRef = useRef<HTMLElement>(null);
@@ -187,39 +187,36 @@ export default function IllustrationPage() {
           return;
         }
 
-        const { character, msg, success, duration } = (await res.json()) as {
+        const result = (await res.json()) as {
           character: CharacterType;
           msg: string;
           success: boolean;
           duration?: number;
         };
 
-        console.log("CHARACTER", character);
-        console.log("MESSAGE", msg);
-        console.log("SUCCESS", success);
-        console.log("DURATION", duration);
+        console.log("RESULT", result);
 
         // The server sends duration only if game is won.
-        if (duration) {
-          setDuration(duration);
+        if (result.duration) {
+          setDurationTook(result.duration);
           dialogRef.current.showModal();
           setIsGameWon(true);
           return;
         }
 
-        if (success) {
-          dispatch({ type: "update-character", payload: character });
-          setMessage({
-            content: msg,
-            color: "green",
-          });
-          return;
-        }
+        // if (success) {
+        //   dispatch({ type: "update-character", payload: character });
+        //   setMessage({
+        //     content: msg,
+        //     color: "green",
+        //   });
+        //   return;
+        // }
 
-        setMessage({
-          content: msg,
-          color: "crimson",
-        });
+        // setMessage({
+        //   content: msg,
+        //   color: "crimson",
+        // });
       } catch (error) {
         throw new Error((error as Error).message);
       }
@@ -248,7 +245,7 @@ export default function IllustrationPage() {
           />
         </>
       )}
-      <Modal dialogRef={dialogRef} duration={duration} illustrationId={illustrationId} />
+      <Modal dialogRef={dialogRef} duration={durationTook} illustrationId={illustrationId} />
     </main>
   );
 }
