@@ -187,36 +187,34 @@ export default function IllustrationPage() {
           return;
         }
 
-        const result = (await res.json()) as {
+        const { character, msg, success, duration } = (await res.json()) as {
           character: CharacterType;
           msg: string;
           success: boolean;
           duration?: number;
         };
 
-        console.log("RESULT", result);
-
         // The server sends duration only if game is won.
-        if (result.duration) {
-          setDurationTook(result.duration);
+        if (duration) {
+          setDurationTook(duration);
           dialogRef.current.showModal();
           setIsGameWon(true);
           return;
         }
 
-        // if (success) {
-        //   dispatch({ type: "update-character", payload: character });
-        //   setMessage({
-        //     content: msg,
-        //     color: "green",
-        //   });
-        //   return;
-        // }
+        if (success) {
+          dispatch({ type: "update-character", payload: character });
+          setMessage({
+            content: msg,
+            color: "green",
+          });
+          return;
+        }
 
-        // setMessage({
-        //   content: msg,
-        //   color: "crimson",
-        // });
+        setMessage({
+          content: msg,
+          color: "crimson",
+        });
       } catch (error) {
         throw new Error((error as Error).message);
       }
